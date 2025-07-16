@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verify Your Account</title>
+    <style>
+        /* Reset styles for email client compatibility */
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, Helvetica, sans-serif;
+            background-color: #1a1a1a;
+            color: #ffffff;
+            line-height: 1.5;
+        }
+        table.container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #2d2d2d;
+            border: 1px solid #3c3c3c;
+            border-radius: 5px;
+        }
+        .logo-img {
+            width: 100px;
+            height: auto;
+            display: block;
+            margin: 20px auto;
+        }
+        h1 {
+            font-size: 22px;
+            color: #ffffff;
+            margin: 0 0 10px;
+            text-align: center;
+        }
+        p {
+            font-size: 14px;
+            color: #d1d1d1;
+            margin: 0 0 10px;
+            text-align: center;
+        }
+        .verification-code {
+            font-size: 18px;
+            font-weight: bold;
+            color: #ffffff;
+            background-color: #3c3c3c;
+            padding: 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 15px 0;
+        }
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: #4a5568;
+            color: #ffffff !important;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 4px;
+            margin: 15px 0;
+        }
+        .footer {
+            font-size: 12px;
+            color: #a0a0a0;
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #3c3c3c;
+        }
+        @media only screen and (max-width: 600px) {
+            table.container {
+                margin: 10px;
+                padding: 10px;
+            }
+            .logo-img {
+                width: 80px;
+            }
+            h1 {
+                font-size: 18px;
+            }
+            p {
+                font-size: 13px;
+            }
+            .verification-code {
+                font-size: 16px;
+            }
+            .button {
+                padding: 8px 16px;
+                font-size: 13px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #1a1a1a; padding: 20px;">
+        <tr>
+            <td align="center">
+                <table class="container" cellpadding="20" cellspacing="0">
+                    <tr>
+                        <td align="center">
+                            <!-- Vector Logo (SVG) with Black Theme -->
+                            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgdmlld0JveD0iMCAwIDEwMCAxMDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxjaXJjbGUgY3g9IjUwIiBjeT0iNTAiIHI9IjQ1IiBmaWxsPSJub25lIiBzdHJva2U9IiNmZmZmZmYiIHN0cm9rZS13aWR0aD0iNSIvPgo8cGF0aCBkPSJNNjAgMjBIMzBDMjIuMiAyMCAxNSAyNy4yIDE1IDM1QzE1IDQyLjggMjIuMiA1MCAzMCA1MEg3MCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZmZmZmZmIiBzdHJva2Utd2lkdGg9IjUiLz4KPHBhdGggZD0iTTQwIDgwSDMwQzIyLjIgODAgMTUgNzIuOCAxNSA2NUMxNSA1Ny4yIDIyLjIgNTAgMzAgNTBIMzUiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSI1Ii8+Cjx0ZXh0IHg9IjQyIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsLCBzYW5zLXNlcmlmIiBmb250LXNpemU9IjMwIiBmb250LXdlaWdodD0iYm9sZCIgZmlsbD0iI2ZmZmZmZiI+QjwvdGV4dD4KPC9zdmc+" alt="BookSwift Logo" class="logo-img">
+                            <!-- Content -->
+                            <h1>Hi {{ user.email }}!</h1>
+                            <p>Thank you for joining BookSwift!</p>
+                            <p>Please verify your account to get started. Use the code below or click the button.</p>
+                            <div class="verification-code">{{ verificationToken }}</div>
+                            <p>Or click below to verify your account:</p>
+                            <a href="{{ verificationToken }}" class="button">Verify Now</a>
+                            <!-- Footer -->
+                            <div class="footer">
+                                <p>If you didn’t register, please ignore this email.</p>
+                                <p>© {{ "now"|date("Y") }} BookSwift. All rights reserved.</p>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
