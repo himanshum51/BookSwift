@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity]
 class OrganizerProfile
@@ -38,6 +39,20 @@ class OrganizerProfile
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $photo = null;
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
+        return $this;
+    }
+
     public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
@@ -56,8 +71,14 @@ class OrganizerProfile
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        if ($user->getOrganizerProfile() !== $this) {
+            $user->setOrganizerProfile($this);
+        }
+
         return $this;
     }
+
 
     public function getCompanyName(): ?string
     {

@@ -1,0 +1,8 @@
+flysystem:
+    storages:
+        minio.storage:
+            adapter: 'aws'
+            options:
+                client: 'aws.s3.client'
+                bucket: '%env(MINIO_BUCKET)%'
+                prefix: ''
