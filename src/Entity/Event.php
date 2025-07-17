@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\EventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: EventRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -37,7 +39,7 @@ class Event
     private ?string $banner = null;
 
     #[ORM\Column(type: "string", length: 20)]
-    private string $status = 'draft'; // draft | published | cancelled
+    private string $status = 'draft'; 
 
     #[ORM\Column(type: "boolean")]
     private bool $isDeleted = false;
@@ -55,6 +57,9 @@ class Event
     #[ORM\Column(type: "integer")]
     private int $totalBookings = 0;
 
+    #[ORM\OneToMany(mappedBy: "event", targetEntity: TicketType::class, cascade: ["persist", "remove"])]
+    private Collection $ticketTypes;
+
     #[ORM\PrePersist]
     public function onCreate(): void
     {
@@ -65,6 +70,34 @@ class Event
     public function onUpdate(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    public function __construct()
+    {
+        $this->ticketTypes = new ArrayCollection();
+    }
+
+
+    public function getTicketTypes(): Collection
+    {
+        return $this->ticketTypes;
+    }
+
+    public function addTicketType(TicketType $ticketType): void
+    {
+        if (!$this->ticketTypes->contains($ticketType)) {
+            $this->ticketTypes->add($ticketType);
+            $ticketType->setEvent($this);
+        }
+    }
+
+    public function removeTicketType(TicketType $ticketType): void
+    {
+        if ($this->ticketTypes->removeElement($ticketType)) {
+            if ($ticketType->getEvent() === $this) {
+                $ticketType->setEvent(null);
+            }
+        }
     }
 
     public function getId(): ?int

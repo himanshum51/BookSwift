@@ -40,6 +40,19 @@ class EventController extends AbstractController
         if ($event->getCreatedBy() !== $this->getUser()) {
             throw $this->createAccessDeniedException('Unauthorized');
         }
+
+        $ticketTypes = $event->getTicketTypes()->map(function ($ticket) {
+            return [
+                'id' => $ticket->getId(),
+                'name' => $ticket->getName(),
+                'description' => $ticket->getDescription(),
+                'price' => $ticket->getPrice(),
+                'quantity' => $ticket->getQuantity(),
+                'available_from' => $ticket->getAvailableFrom()->format('Y-m-d H:i'),
+                'available_to' => $ticket->getAvailableTo()->format('Y-m-d H:i'),
+            ];
+        })->toArray();
+
         return $this->json([
             'id' => $event->getId(),
             'title' => $event->getTitle(),
@@ -50,6 +63,7 @@ class EventController extends AbstractController
             'status' => $event->getStatus(),
             'totalBookings' => $event->getTotalBookings(),
             'banner' => $event->getBanner() ? $this->fileUploader->getPublicUrl($event->getBanner()) : null,
+            'ticketTypes' => $ticketTypes,
         ]);
     }
 
