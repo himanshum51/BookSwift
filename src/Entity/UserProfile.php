@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity]
 class UserProfile
@@ -31,19 +32,27 @@ class UserProfile
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $updatedAt;
 
+
+    #[ORM\Column(type: 'string', nullable: true)]
+    private ?string $photo = null;
+
+    #[Vich\UploadableField(mapping: 'profile_photos', fileNameProperty: 'photo')]
+    private ?File $photoFile = null;
+
+
      public function __construct()
     {
         $this->createdAt = new \DateTimeImmutable();
         $this->updatedAt = new \DateTimeImmutable();
     }
 
-    // 🔑 ID
+    // ID
     public function getId(): int
     {
         return $this->id;
     }
 
-    // 🔑 User
+    // User
     public function getUser(): User
     {
         return $this->user;
@@ -55,7 +64,7 @@ class UserProfile
         return $this;
     }
 
-    // 🔑 First Name
+    // First Name
     public function getFirstName(): ?string
     {
         return $this->firstName;
@@ -67,7 +76,7 @@ class UserProfile
         return $this;
     }
 
-    // 🔑 Last Name
+    // Last Name
     public function getLastName(): ?string
     {
         return $this->lastName;
@@ -79,7 +88,7 @@ class UserProfile
         return $this;
     }
 
-    // 🔑 Phone Number
+    // Phone Number
     public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
@@ -91,7 +100,7 @@ class UserProfile
         return $this;
     }
 
-    // 🔑 Created At
+    // Created At
     public function getCreatedAt(): \DateTimeInterface
     {
         return $this->createdAt;
@@ -103,7 +112,7 @@ class UserProfile
         return $this;
     }
 
-    // 🔑 Updated At
+    // Updated At
     public function getUpdatedAt(): \DateTimeInterface
     {
         return $this->updatedAt;
@@ -112,6 +121,17 @@ class UserProfile
     public function setUpdatedAt(\DateTimeInterface $updatedAt): self
     {
         $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    public function getPhoto(): ?string
+    {
+        return $this->photo;
+    }
+
+    public function setPhoto(?string $photo): self
+    {
+        $this->photo = $photo;
         return $this;
     }
 }

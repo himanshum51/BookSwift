@@ -13,6 +13,19 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
+    # https://symfony.com/doc/current/service_container.html#creating-your-first-service
+    aws.s3.client:
+        class: Aws\S3\S3Client
+        arguments:
+            -
+                version: 'latest'
+                region: '%env(MINIO_REGION)%'
+                endpoint: '%env(MINIO_ENDPOINT)%'
+                use_path_style_endpoint: true
+                credentials:
+                    key: '%env(MINIO_ACCESS_KEY)%'
+                    secret: '%env(MINIO_SECRET_KEY)%'
+
     App\:
         resource: '../src/'
 

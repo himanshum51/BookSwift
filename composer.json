@@ -12,6 +12,8 @@
         "doctrine/doctrine-migrations-bundle": "^3.4",
         "doctrine/orm": "^3.5",
         "gesdinet/jwt-refresh-token-bundle": "*",
+        "league/flysystem-aws-s3-v3": "^3.0",
+        "league/flysystem-bundle": "*",
         "lexik/jwt-authentication-bundle": "*",
         "nelmio/cors-bundle": "^2.5",
         "phpdocumentor/reflection-docblock": "^5.6",
@@ -42,12 +44,14 @@
         "symfony/string": "7.3.*",
         "symfony/translation": "7.3.*",
         "symfony/twig-bundle": "7.3.*",
+        "symfony/uid": "7.3.*",
         "symfony/ux-turbo": "^2.27",
         "symfony/validator": "7.3.*",
         "symfony/web-link": "7.3.*",
         "symfony/yaml": "7.3.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "vich/uploader-bundle": "*"
     },
     "config": {
         "allow-plugins": {

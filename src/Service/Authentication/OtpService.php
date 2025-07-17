@@ -19,7 +19,7 @@ class OtpService
      */
     public function generateAndSendEmailVerificationOtp(User $user): void
     {
-        $token = bin2hex(random_bytes(16)); // Secure 32-char hex
+        $token = bin2hex(random_bytes(16)); 
         $user->setVerificationToken($token);
         $user->setIsVerified(false);
 
@@ -48,7 +48,7 @@ class OtpService
     }
 
     /**
-     * ✅ NEW: Send the reset password email.
+     * NEW: Send the reset password email.
      */
     public function sendResetPasswordEmail(string $to, string $resetLink): void
     {

@@ -77,7 +77,15 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
     public function setUserProfile(?UserProfile $profile): void { $this->userProfile = $profile; }
 
     public function getOrganizerProfile(): ?OrganizerProfile { return $this->organizerProfile; }
-    public function setOrganizerProfile(?OrganizerProfile $profile): void { $this->organizerProfile = $profile; }
+    public function setOrganizerProfile(?OrganizerProfile $profile): void
+{
+    $this->organizerProfile = $profile;
+
+    if ($profile && $profile->getUser() !== $this) {
+        $profile->setUser($this);
+    }
+}
+
 
     public function getCreatedAt(): \DateTimeInterface { return $this->createdAt; }
     public function getUpdatedAt(): \DateTimeInterface { return $this->updatedAt; }
