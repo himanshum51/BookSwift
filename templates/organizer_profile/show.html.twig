@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OrganizerProfile{% endblock %}
+
+{% block body %}
+    <h1>OrganizerProfile</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ organizer_profile.id }}</td>
+            </tr>
+            <tr>
+                <th>CompanyName</th>
+                <td>{{ organizer_profile.companyName }}</td>
+            </tr>
+            <tr>
+                <th>Bio</th>
+                <td>{{ organizer_profile.bio }}</td>
+            </tr>
+            <tr>
+                <th>Website</th>
+                <td>{{ organizer_profile.website }}</td>
+            </tr>
+            <tr>
+                <th>PhoneNumber</th>
+                <td>{{ organizer_profile.phoneNumber }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ organizer_profile.address }}</td>
+            </tr>
+            <tr>
+                <th>CreatedAt</th>
+                <td>{{ organizer_profile.createdAt ? organizer_profile.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>UpdatedAt</th>
+                <td>{{ organizer_profile.updatedAt ? organizer_profile.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Photo</th>
+                <td>{{ organizer_profile.photo }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_organizer_profile_index') }}">back to list</a>
+
+    <a href="{{ path('app_organizer_profile_edit', {'id': organizer_profile.id}) }}">edit</a>
+
+    {{ include('organizer_profile/_delete_form.html.twig') }}
+{% endblock %}

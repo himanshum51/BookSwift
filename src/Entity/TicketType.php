@@ -6,6 +6,8 @@ use App\Repository\TicketTypeRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Event;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 #[ORM\Entity(repositoryClass: TicketTypeRepository::class)]
 class TicketType
@@ -39,6 +41,14 @@ class TicketType
 
     #[ORM\Column(type: "datetime")]
     private \DateTimeInterface $availableTo;
+
+    #[ORM\OneToMany(mappedBy: "ticketType", targetEntity: Booking::class, cascade: ["persist", "remove"])]
+    private Collection $bookings;
+
+    public function __construct()
+    {
+        $this->bookings = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -114,4 +124,32 @@ class TicketType
     {
         $this->availableTo = $availableTo;
     }
+
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): void
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setTicketType($this);
+        }
+    }
+
+    public function removeBooking(Booking $booking): void
+    {
+        if ($this->bookings->removeElement($booking)) {
+            if ($booking->getTicketType() === $this) {
+                $booking->setTicketType(null);
+            }
+        }
+    }
+
+    public function __toString(): string
+{
+    return $this->getName(); // Or type or label
+}
+
 }

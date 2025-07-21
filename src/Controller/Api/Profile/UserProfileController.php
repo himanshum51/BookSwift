@@ -10,7 +10,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
-
 #[Route('/api/profile/user')]
 #[IsGranted('IS_AUTHENTICATED_FULLY')]
 class UserProfileController extends AbstractController
@@ -23,7 +22,12 @@ class UserProfileController extends AbstractController
     #[Route('', methods: ['GET'])]
     public function getProfile(): JsonResponse
     {
-        $profile = $this->getUser()->getUserProfile();
+        $user = $this->getUser();
+        $profile = $user->getUserProfile();
+
+        if (!$profile) {
+            return $this->json(['error' => 'Profile not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
 
         return $this->json([
             'id' => $profile->getId(),
@@ -34,11 +38,24 @@ class UserProfileController extends AbstractController
         ]);
     }
 
-    #[Route('', methods: ['POST'])] // Accept only POST, and override with _method=PUT in form
+    #[Route('', methods: ['POST'])]
     public function updateProfile(Request $request): JsonResponse
     {
-        $profile = $this->getUser()->getUserProfile();
-        $this->profileService->updateProfile($profile, $request);
+        $user = $this->getUser();
+        $profile = $user->getUserProfile();
+
+        if (!$profile) {
+            return $this->json(['error' => 'Profile not found'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        try {
+            $this->profileService->updateProfile($profile, $request);
+        } catch (\Throwable $e) {
+            return $this->json([
+                'error' => 'Unable to update profile',
+                'details' => $e->getMessage()
+            ], JsonResponse::HTTP_INTERNAL_SERVER_ERROR);
+        }
 
         return $this->json(['message' => 'Profile updated!']);
     }
