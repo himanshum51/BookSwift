@@ -1,0 +1,12 @@
+<h2>Hello {{ user.userProfile.fullName ?? user.email }}!</h2>
+
+<p>The event you booked has recently been <strong>updated</strong>.</p>
+
+<h3>Updated Event Details:</h3>
+<ul>
+    <li><strong>Title:</strong> {{ event.title }}</li>
+    <li><strong>Date:</strong> {{ event.startDate|date('d M Y H:i') }} to {{ event.endDate|date('d M Y H:i') }}</li>
+    <li><strong>Location:</strong> {{ event.location }}</li>
+</ul>
+
+<p>If you have questions or concerns, feel free to contact the event organizer.</p>

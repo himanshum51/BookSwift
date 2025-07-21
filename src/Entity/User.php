@@ -135,4 +135,10 @@ public function __toString(): string
     }
 
 
+
+
+    public function getFullName(): string
+    {
+        return trim($this->firstName . ' ' . $this->lastName);
+    }
 }
