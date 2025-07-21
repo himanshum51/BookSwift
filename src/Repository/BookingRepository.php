@@ -12,4 +12,18 @@ class BookingRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Booking::class);
     }
+
+    public function findPastBookingsForUser(int $userId): array
+    {
+        return $this->createQueryBuilder('b')
+            ->join('b.ticketType', 'tt')
+            ->join('tt.event', 'e')
+            ->where('b.user = :user')
+            ->andWhere('e.endDate < :now')  
+            ->setParameter('user', $userId)
+            ->setParameter('now', new \DateTimeImmutable())
+            ->orderBy('e.endDate', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }

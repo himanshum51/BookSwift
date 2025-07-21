@@ -100,6 +100,9 @@ class Event
         }
     }
 
+
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -114,6 +117,11 @@ class Event
     {
         $this->title = $title;
     }
+        public function __toString(): string
+{
+    return $this->getTitle(); // Or getName(), depending on your property
+}
+
 
     public function getDescription(): ?string
     {
@@ -220,5 +228,8 @@ class Event
         $this->totalBookings = $totalBookings;
     }
 
-    
+    public function getOrganizer(): User
+    {
+        return $this->createdBy; // Assuming the organizer is the user who created the event
+    }
 }

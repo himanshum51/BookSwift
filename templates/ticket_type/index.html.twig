@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TicketType index{% endblock %}
+
+{% block body %}
+    <h1>TicketType index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>AvailableFrom</th>
+                <th>AvailableTo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ticket_type in ticket_types %}
+            <tr>
+                <td>{{ ticket_type.id }}</td>
+                <td>{{ ticket_type.name }}</td>
+                <td>{{ ticket_type.description }}</td>
+                <td>{{ ticket_type.price }}</td>
+                <td>{{ ticket_type.quantity }}</td>
+                <td>{{ ticket_type.availableFrom ? ticket_type.availableFrom|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ ticket_type.availableTo ? ticket_type.availableTo|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_ticket_type_show', {'id': ticket_type.id}) }}">show</a>
+                    <a href="{{ path('app_ticket_type_edit', {'id': ticket_type.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ticket_type_new') }}">Create new</a>
+{% endblock %}

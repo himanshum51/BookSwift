@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OrganizerProfile index{% endblock %}
+
+{% block body %}
+    <h1>OrganizerProfile index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>CompanyName</th>
+                <th>Bio</th>
+                <th>Website</th>
+                <th>PhoneNumber</th>
+                <th>Address</th>
+                <th>CreatedAt</th>
+                <th>UpdatedAt</th>
+                <th>Photo</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for organizer_profile in organizer_profiles %}
+            <tr>
+                <td>{{ organizer_profile.id }}</td>
+                <td>{{ organizer_profile.companyName }}</td>
+                <td>{{ organizer_profile.bio }}</td>
+                <td>{{ organizer_profile.website }}</td>
+                <td>{{ organizer_profile.phoneNumber }}</td>
+                <td>{{ organizer_profile.address }}</td>
+                <td>{{ organizer_profile.createdAt ? organizer_profile.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ organizer_profile.updatedAt ? organizer_profile.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ organizer_profile.photo }}</td>
+                <td>
+                    <a href="{{ path('app_organizer_profile_show', {'id': organizer_profile.id}) }}">show</a>
+                    <a href="{{ path('app_organizer_profile_edit', {'id': organizer_profile.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="10">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_organizer_profile_new') }}">Create new</a>
+{% endblock %}
