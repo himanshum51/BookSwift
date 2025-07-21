@@ -78,8 +78,8 @@
         <div class="section highlight">
             <p><span class="label">Ticket Type:</span> {{ booking.ticketType.name }}</p>
             <p><span class="label">Quantity:</span> {{ booking.quantity }}</p>
-            <p><span class="label">Price Per Ticket:</span> ₹{{ booking.ticketType.price }}</p>
-            <p><span class="label">Total Price:</span> ₹{{ booking.ticketType.price * booking.quantity }}</p>
+            <p><span class="label">Price Per Ticket:</span> {{ booking.ticketType.price }} INR</p>
+            <p><span class="label">Total Price:</span> {{ booking.ticketType.price * booking.quantity }}    INR</p>
         </div>
 
         <div class="qr">

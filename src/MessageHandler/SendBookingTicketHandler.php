@@ -22,7 +22,7 @@ class SendBookingTicketHandler
         $booking = $this->bookingRepository->find($message->getBookingId());
 
         if (!$booking) {
-            return; // Optionally log error
+            return; 
         }
 
         $pdfContent = $this->pdfGeneratorService->generateTicketPdf($booking);
