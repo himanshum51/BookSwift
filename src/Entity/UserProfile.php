@@ -134,4 +134,10 @@ class UserProfile
         $this->photo = $photo;
         return $this;
     }
+
+    public function getFullName(): string
+{
+    return trim(($this->firstName ?? '') . ' ' . ($this->lastName ?? ''));
+}
+
 }

@@ -13,5 +13,8 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
-    // Custom methods if needed
+   public function getFullName(): string
+    {
+        return trim($this->firstName . ' ' . $this->lastName);
+    }
 }

@@ -7,6 +7,8 @@ use App\Repository\EventRepository;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use App\Event\EventUpdatedEvent;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class EventService
 {
@@ -14,6 +16,7 @@ class EventService
         private readonly EntityManagerInterface $em,
         private readonly FileUploader $fileUploader,
         private readonly EventRepository $eventRepository,
+        private readonly EventDispatcherInterface $dispatcher,
     ) {}
 
     public function create(Request $request, User $user): Event
@@ -34,6 +37,9 @@ class EventService
 
         $this->mapFields($event, $request);
         $this->em->flush();
+
+        // Dispatch event after updating
+        $this->dispatcher->dispatch(new EventUpdatedEvent($event));
     }
 
     public function softDelete(Event $event, User $user): void
