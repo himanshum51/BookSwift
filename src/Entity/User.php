@@ -78,13 +78,9 @@ class User implements UserInterface,PasswordAuthenticatedUserInterface
 
     public function getOrganizerProfile(): ?OrganizerProfile { return $this->organizerProfile; }
     public function setOrganizerProfile(?OrganizerProfile $profile): void
-{
-    $this->organizerProfile = $profile;
-
-    if ($profile && $profile->getUser() !== $this) {
-        $profile->setUser($this);
+    {
+        $this->organizerProfile = $profile;
     }
-}
 
 public function __toString(): string
 {

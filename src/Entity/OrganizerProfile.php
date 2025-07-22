@@ -71,11 +71,6 @@ class OrganizerProfile
     public function setUser(User $user): self
     {
         $this->user = $user;
-
-        if ($user->getOrganizerProfile() !== $this) {
-            $user->setOrganizerProfile($this);
-        }
-
         return $this;
     }
 
