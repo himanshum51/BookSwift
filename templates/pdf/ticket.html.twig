@@ -4,93 +4,161 @@
     <meta charset="UTF-8">
     <title>Event Ticket</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             color: #333;
-            padding: 30px;
-            background-color: #fff;
+            background-color: #f4f4f9;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .ticket-container {
-            border: 2px dashed #444;
-            padding: 20px;
-            max-width: 700px;
-            margin: 0 auto;
+            display: flex;
+            max-width: 800px;
+            width: 100%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 15px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        .main-content {
+            padding: 30px;
+            flex-grow: 1;
+            border-right: 2px dashed #ddd;
         }
 
         .header {
-            text-align: center;
-            margin-bottom: 30px;
+            text-align: left;
+            margin-bottom: 25px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 20px;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 28px;
-            color: #007BFF;
+            font-size: 32px;
+            color:c
+            font-weight: 700;
+        }
+
+        .header p {
+            margin: 5px 0 0;
+            font-size: 16px;
+            color: #555;
         }
 
         .section {
             margin-bottom: 20px;
         }
 
+        .section-title {
+            font-weight: bold;
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 10px;
+            border-bottom: 2px hsl(221, 84.10%, 60.60%); /* Vibrant Pink */ #d946ef;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+
         .label {
             font-weight: bold;
-            margin-right: 5px;
+            color: #555;
+        }
+
+        .attendee-info p, .booking-details p {
+            margin: 8px 0;
+            font-size: 15px;
+        }
+
+        .sidebar {
+            background-color: #f8f9fa;
+            padding: 30px;
+            width: 250px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .qr-code {
+            text-align: center;
+        }
+
+        .qr-code img {
+            border: 5px solid #fff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+
+        .event-short-info {
+            text-align: center;
+        }
+
+        .event-short-info h2 {
+            margin: 0;
+            font-size: 20px;
+            color: hsl(221, 84.10%, 60.60%); /* Vibrant Pink */
+        }
+
+        .event-short-info p {
+            margin: 5px 0 0;
+            color: #777;
         }
 
         .footer {
-            text-align: center;
             font-size: 12px;
             color: #888;
-            border-top: 1px solid #ccc;
-            padding-top: 10px;
-            margin-top: 30px;
-        }
-
-        .qr {
             text-align: center;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
-        .highlight {
-            background-color: #f8f9fa;
-            padding: 10px;
-            border-left: 5px solid #007BFF;
-        }
     </style>
 </head>
 <body>
     <div class="ticket-container">
-        <div class="header">
-            <h1>{{ event.title|upper }}</h1>
-            <p>{{ event.location }} | {{ event.startDate|date('Y-m-d H:i') }}</p>
+        <div class="main-content">
+            <div class="header">
+                <h1>{{ event.title|upper }}</h1>
+                <p>{{ event.location }}</p>
+            </div>
+
+            <div class="section attendee-info">
+                <h2 class="section-title">Attendee Information</h2>
+                <p><span class="label">Name:</span> {{ booking.user.userProfile ? booking.user.userProfile.fullName : booking.user.email }}</p>
+                <p><span class="label">Email:</span> {{ booking.user.email }}</p>
+            </div>
+
+            <div class="section booking-details">
+                <h2 class="section-title">Booking Details</h2>
+                <p><span class="label">Booking ID:</span> {{ booking.id }}</p>
+                <p><span class="label">Ticket Type:</span> {{ booking.ticketType.name }}</p>
+                <p><span class="label">Quantity:</span> {{ booking.quantity }}</p>
+                <p><span class="label">Total Price:</span> {{ booking.ticketType.price * booking.quantity }} INR</p>
+            </div>
+
+            <div class="footer">
+                <p>This ticket is non-transferable. Please bring a valid ID.</p>
+                <p>Thank you for booking with <strong>{{ event.organizer.userProfile.fullName ?? 'BookSwift' }}</strong></p>
+            </div>
         </div>
-
-        <div class="section">
-            <p><span class="label">Attendee:</span>
-            {{ booking.user.userProfile ? booking.user.userProfile.fullName : booking.user.email }}</p>
-
-            <p><span class="label">Email:</span> {{ booking.user.email }}</p>
-
-            <p><span class="label">Booking ID:</span> {{ booking.id }}</p>
-        </div>
-
-        <div class="section highlight">
-            <p><span class="label">Ticket Type:</span> {{ booking.ticketType.name }}</p>
-            <p><span class="label">Quantity:</span> {{ booking.quantity }}</p>
-            <p><span class="label">Price Per Ticket:</span> ₹{{ booking.ticketType.price }}</p>
-            <p><span class="label">Total Price:</span> ₹{{ booking.ticketType.price * booking.quantity }}</p>
-        </div>
-
-        <div class="qr">
-            <p>Scan this at entry</p>
-            {# Optional: Insert a QR Code image here if implemented later #}
-            <img src="https://api.qrserver.com/v1/create-qr-code/?data=Booking:{{ booking.id }}&size=100x100" alt="QR Code">
-        </div>
-
-        <div class="footer">
-            <p>This ticket is valid only for the registered user. Bring a valid ID and this printed ticket to the event.</p>
-            <p>Thank you for booking with {{ event.organizer.userProfile.fullName ?? 'our platform' }}</p>
+        <div class="sidebar">
+            <div class="event-short-info">
+                <h2>{{ event.title }}</h2>
+                <p>{{ event.startDate|date('F j, Y') }}</p>
+                <p>{{ event.startDate|date('g:i A') }}</p>
+            </div>
+            <div class="qr-code">
+                <img src="https://api.qrserver.com/v1/create-qr-code/?data=Booking:{{ booking.id }}&size=150x150&bgcolor=f8f9fa" alt="QR Code">
+                <p>Scan at entry</p>
+            </div>
         </div>
     </div>
 </body>

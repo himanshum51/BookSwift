@@ -1,10 +1,4 @@
 <?php
-
-// ============================
-// Entity: Booking.php
-// Path: src/Entity/Booking.php
-// ============================
-
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
