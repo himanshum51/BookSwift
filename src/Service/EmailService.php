@@ -22,4 +22,15 @@ class EmailService
 
         $this->mailer->send($email);
     }
+
+    public function sendEmail(string $to, string $subject, string $html): void
+    {
+        $email = (new Email())
+            ->from('noreply@bookswift.com')
+            ->to($to)
+            ->subject($subject)
+            ->html($html);
+
+        $this->mailer->send($email);
+    }
 }

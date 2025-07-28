@@ -1,0 +1,15 @@
+# config/packages/scheduler.yaml
+when@prod:
+    framework:
+        scheduler:
+            enabled: true
+
+when@dev:
+    framework:
+        scheduler:
+            enabled: true
+
+when@test:
+    framework:
+        scheduler:
+            enabled: false
