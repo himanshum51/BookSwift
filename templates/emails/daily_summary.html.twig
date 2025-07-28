@@ -1,0 +1,16 @@
+<h2>Good morning, {{ organizer.companyName }}!</h2>
+
+<p>Here is the summary of your events for today ({{ "now"|date("Y-m-d") }}):</p>
+
+<ul>
+    {% for event in events %}
+        <li>
+            <strong>{{ event.title }}</strong> at {{ event.startDate|date("H:i") }}<br>
+            Bookings: {{ event.totalBookings }}
+        </li>
+    {% else %}
+        <li>No events today.</li>
+    {% endfor %}
+</ul>
+
+<p>Have a successful day!</p>

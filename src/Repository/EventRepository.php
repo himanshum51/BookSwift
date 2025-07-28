@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Event;
 use App\Entity\User;
+use App\Entity\OrganizerProfile;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -43,5 +44,21 @@ class EventRepository extends ServiceEntityRepository
             ->orderBy('e.startDate', 'ASC')
             ->getQuery()
             ->getResult();
+    }
+
+    public function findTodayEventsByOrganizer(OrganizerProfile $organizer): array
+    {
+        $qb = $this->createQueryBuilder('e')
+            ->leftJoin('e.createdBy', 'u')
+            ->leftJoin('u.organizerProfile', 'o')
+            ->where('o.id = :organizerId')
+            ->andWhere('e.startDate >= :startOfDay')
+            ->andWhere('e.startDate < :endOfDay')
+            ->setParameter('organizerId', $organizer->getId())
+            ->setParameter('startOfDay', new \DateTime('today'))
+            ->setParameter('endOfDay', new \DateTime('tomorrow'))
+            ->groupBy('e.id');
+
+        return $qb->getQuery()->getResult();
     }
 }

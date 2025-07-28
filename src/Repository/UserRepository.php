@@ -17,4 +17,13 @@ class UserRepository extends ServiceEntityRepository
     {
         return trim($this->firstName . ' ' . $this->lastName);
     }
+
+public function findAllAdmins(): array
+{
+    $users = $this->findAll();
+
+    return array_filter($users, function ($user) {
+        return in_array('ROLE_ADMIN', $user->getRoles());
+    });
+}
 }

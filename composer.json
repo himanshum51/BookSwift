@@ -40,6 +40,7 @@
         "symfony/property-access": "7.3.*",
         "symfony/property-info": "7.3.*",
         "symfony/runtime": "7.3.*",
+        "symfony/scheduler": "7.3.*",
         "symfony/security-bundle": "7.3.*",
         "symfony/serializer": "7.3.*",
         "symfony/stimulus-bundle": "^2.27",
@@ -53,7 +54,8 @@
         "symfony/yaml": "7.3.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0",
-        "vich/uploader-bundle": "*"
+        "vich/uploader-bundle": "*",
+        "zenstruck/schedule-bundle": "^1.8"
     },
     "config": {
         "allow-plugins": {
