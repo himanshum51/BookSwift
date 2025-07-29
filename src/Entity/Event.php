@@ -60,6 +60,9 @@ class Event
     #[ORM\OneToMany(mappedBy: "event", targetEntity: TicketType::class, cascade: ["persist", "remove"])]
     private Collection $ticketTypes;
 
+    #[ORM\OneToMany(mappedBy: "event", targetEntity: Booking::class)]
+    private Collection $bookings;
+
     #[ORM\PrePersist]
     public function onCreate(): void
     {
@@ -75,6 +78,7 @@ class Event
     public function __construct()
     {
         $this->ticketTypes = new ArrayCollection();
+        $this->bookings = new ArrayCollection();
     }
 
 
@@ -231,5 +235,21 @@ class Event
     public function getOrganizer(): User
     {
         return $this->createdBy; // Assuming the organizer is the user who created the event
+    }
+
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function hasBookingByUser(User $user): bool
+    {
+        foreach ($this->bookings as $booking) {
+            if ($booking->getUser() === $user) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
