@@ -22,9 +22,9 @@ class BookingCrudController extends AbstractCrudController
             AssociationField::new('ticketType')->setLabel('Ticket Type'),
             IntegerField::new('quantity'),
             DateTimeField::new('bookedAt')->onlyOnIndex(),
-            DateTimeField::new('updatedAt')->onlyOnIndex(),
-            DateTimeField::new('createdAt')->onlyOnIndex(),
-            DateTimeField::new('canceledAt')->onlyOnIndex(),
+            AssociationField::new('ticketType')->setLabel('Ticket Type'),
+            AssociationField::new('user')->setLabel('User'),
+
         ];
     }
 }
