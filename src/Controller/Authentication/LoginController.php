@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse; 
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -82,5 +83,11 @@ class LoginController extends BaseController
             'token' => $token,
             'refresh_token' => $refreshToken->getRefreshToken(),
         ],201);
+    }
+
+     #[Route('/', name: 'root_redirect')]
+    public function index(): RedirectResponse
+    {
+        return $this->redirectToRoute('app_login'); 
     }
 }
