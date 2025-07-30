@@ -9,11 +9,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
-use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Exception\InvalidCsrfTokenException;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Http\SecurityRequestAttributes;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Authenticator\AbstractLoginFormAuthenticator;
@@ -34,17 +29,31 @@ class AdminAuthenticator extends AbstractLoginFormAuthenticator
     private EntityManagerInterface $entityManager;
     private CsrfTokenManagerInterface $csrfTokenManager;
 
-    public function __construct(UrlGeneratorInterface $urlGenerator, EntityManagerInterface $entityManager, CsrfTokenManagerInterface $csrfTokenManager)
-    {
+    public function __construct(
+        UrlGeneratorInterface $urlGenerator,
+        EntityManagerInterface $entityManager,
+        CsrfTokenManagerInterface $csrfTokenManager
+    ) {
         $this->urlGenerator = $urlGenerator;
         $this->entityManager = $entityManager;
         $this->csrfTokenManager = $csrfTokenManager;
     }
 
+    /**
+     * Define when this authenticator should run.
+     */
+    public function supports(Request $request): bool
+    {
+        return $request->attributes->get('_route') === self::LOGIN_ROUTE
+            && $request->isMethod('POST');
+    }
+
+    /**
+     * Handle the authentication process.
+     */
     public function authenticate(Request $request): Passport
     {
         $email = $request->request->get('email', '');
-
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
         return new Passport(
@@ -57,15 +66,22 @@ class AdminAuthenticator extends AbstractLoginFormAuthenticator
         );
     }
 
+    /**
+     * Called on successful authentication.
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
     {
         if ($targetPath = $this->getTargetPath($request->getSession(), $firewallName)) {
             return new RedirectResponse($targetPath);
         }
 
+        // Redirect to admin dashboard after successful login
         return new RedirectResponse($this->urlGenerator->generate('admin'));
     }
 
+    /**
+     * Called when authentication fails or no user is logged in.
+     */
     protected function getLoginUrl(Request $request): string
     {
         return $this->urlGenerator->generate(self::LOGIN_ROUTE);
