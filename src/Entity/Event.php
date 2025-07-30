@@ -252,4 +252,12 @@ class Event
 
         return false;
     }
+
+    public function addBooking(Booking $booking): void
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setEvent($this);
+        }
+    }
 }
