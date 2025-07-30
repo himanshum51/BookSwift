@@ -14,12 +14,14 @@ security:
             security: false
 
         admin:
-            pattern: ^/(admin|login)
+            pattern: ^/(admin|login|logout)
             lazy: true
             provider: app_user_provider
             custom_authenticator: App\Security\AdminAuthenticator
             logout:
                 path: app_logout
+                target: app_login
+                
 
         login:
             pattern: ^/api/login
