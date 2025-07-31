@@ -9,6 +9,8 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Event\EventUpdatedEvent;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class EventService
 {
@@ -17,6 +19,7 @@ class EventService
         private readonly FileUploader $fileUploader,
         private readonly EventRepository $eventRepository,
         private readonly EventDispatcherInterface $dispatcher,
+        private readonly AuthorizationCheckerInterface $authorizationChecker
     ) {}
 
     public function create(Request $request, User $user): Event
@@ -31,8 +34,8 @@ class EventService
 
     public function update(Event $event, Request $request, User $user): void
     {
-        if ($event->getCreatedBy() !== $user) {
-            throw new \Exception('Unauthorized');
+        if (!$this->authorizationChecker->isGranted('MANAGE', $event)) {
+            throw new AccessDeniedException('Unauthorized');
         }
 
         $this->mapFields($event, $request);
@@ -44,8 +47,8 @@ class EventService
 
     public function softDelete(Event $event, User $user): void
     {
-        if ($event->getCreatedBy() !== $user) {
-            throw new \Exception('Unauthorized');
+        if (!$this->authorizationChecker->isGranted('MANAGE', $event)) {
+            throw new AccessDeniedException('Unauthorized');
         }
 
         $event->setIsDeleted(true);
