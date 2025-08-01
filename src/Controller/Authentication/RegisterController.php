@@ -10,10 +10,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 class RegisterController extends BaseController
 {
     #[Route('/api/register', name: 'api_register', methods: ['POST'])]
+    #[IsGranted('PUBLIC_ACCESS')]
     public function register(
         Request $request,
         RegisterService $registerService,
